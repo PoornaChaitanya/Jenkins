@@ -1,6 +1,4 @@
-
-
-Installation on EC2 Instance
+# Installation on EC2 Instance
 
 Install Jenkins, configure Docker as agent, set up cicd, deploy applications to k8s and much more.
 
@@ -11,9 +9,9 @@ Launch instances
 
 
 Install Jenkins.
-Pre-Requisites:
 
-Java (JDK)
+Pre-Requisites:
+ Java (JDK)
 Run the below commands to install Java and Jenkins
 Install Java
 
