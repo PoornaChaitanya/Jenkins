@@ -1,6 +1,6 @@
 # Jenkins Installation on EC2 Instance
 
-This guide will help you install Jenkins, configure Docker as an agent, set up CI/CD.
+This guide will help you install Jenkins, configure Docker as an agent.
 
 ## Create AWS EC2 Instance
 
@@ -65,6 +65,7 @@ Enter the password, install suggested plugins, and create an admin user if desir
 ![Screenshot 2024-05-24 190906](https://github.com/PoornaChaitanya/Jenkins/assets/84367538/a80833f0-7fe3-4216-a37e-bcc7108ca8ba)
 
 
+## Docker Slave Configuration
 
 ### Update package list and install Docker
     sudo apt update
@@ -79,19 +80,18 @@ Enter the password, install suggested plugins, and create an admin user if desir
 ### Restart Docker service
     sudo systemctl restart docker
     
-Install Docker Pipeline Plugin in Jenkins
+### Install Docker Pipeline Plugin in Jenkins
 Log in to Jenkins
-Go to Manage Jenkins > Manage Plugins
+Go to `Manage Jenkins` > `Plugins`
 
-In the Available tab, search for 'Docker Pipeline'
+In the Available tab, search for `Docker Pipeline`
 Select the plugin and click Install
 
 ![Screenshot 2024-05-24 191526](https://github.com/PoornaChaitanya/Jenkins/assets/84367538/dc1a581c-2796-4b69-9d5c-812a78c0b150)
 
 Restart Jenkins after installation
-Configure Docker Agent in Jenkins
 
-### Restart Jenkins:
+### Restart Jenkins after installation or by:
     http://<ec2-instance-public-ip>:8080/restart
 
 The docker agent configuration is now successful.
