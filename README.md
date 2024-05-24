@@ -1,88 +1,87 @@
-# 1. Installing Jenkins
-First, update the default Ubuntu packages lists for upgrades with the following command:
+Installation on EC2 Instance
 
-    sudo apt-get update
+Install Jenkins, configure Docker as agent, set up cicd, deploy applications to k8s and much more.
 
-Then, run the following command to install JDK 11:
+AWS EC2 Instance
+Go to AWS Console
+Instances(running)
+Launch instances
+Screenshot 2023-02-01 at 12 37 45 PM
 
-    sudo apt-get install openjdk-11-jdk
-Now, we will install Jenkins itself. Issue the following four commands in sequence to initiate the installation from the Jenkins repository:
+Install Jenkins.
+Pre-Requisites:
 
-    curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
-      /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-    echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-      https://pkg.jenkins.io/debian binary/ | sudo tee \
-      /etc/apt/sources.list.d/jenkins.list > /dev/null
-      
-    sudo apt-get update
-    
-    sudo apt-get install jenkins
+Java (JDK)
+Run the below commands to install Java and Jenkins
+Install Java
 
-Once that’s done, start the Jenkins service with the following command:
+sudo apt update
+sudo apt install openjdk-11-jre
+Verify Java is Installed
 
-    sudo systemctl start jenkins.service
-To confirm its status, use:
+java -version
+Now, you can proceed with installing Jenkins
 
-    sudo systemctl status jenkins
-With Jenkins installed, we can proceed with adjusting the firewall settings. By default, Jenkins will run on port 8080.
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+**Note: ** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as show below.
 
-In order to ensure that this port is accessible, we will need to configure the built-in Ubuntu firewall (ufw). To open the 8080 port and enable the firewall, use the following commands:
+EC2 > Instances > Click on
+In the bottom tabs -> Click on Security
+Security groups
+Add inbound traffic rules as shown in the image (you can just allow TCP 8080 as well, in my case, I allowed All traffic).
+Screenshot 2023-02-01 at 12 42 01 PM
 
-    sudo ufw allow 8080
-    sudo ufw enable
-Once done, test whether the firewall is active using this command:
+Login to Jenkins using the below URL:
+http://:8080 [You can get the ec2-instance-public-ip-address from your AWS EC2 console page]
 
-    sudo ufw status
-With the firewall configured, it’s time to set up Jenkins itself. Type in the IP of your EC2 along with the port number. The Jenkins setup wizard will open.
+Note: If you are not interested in allowing All Traffic to your EC2 instance 1. Delete the inbound traffic rule for your instance 2. Edit the inbound traffic rule to only allow custom TCP port 8080
 
-To check the initial password, use the cat command as indicated below:
+After you login to Jenkins, - Run the command to copy the Jenkins Admin Password - sudo cat /var/lib/jenkins/secrets/initialAdminPassword - Enter the Administrator password
 
-    sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-All Set! You can now start automating...
+Screenshot 2023-02-01 at 10 56 25 AM
 
-# 2. How to Configure and Run Jenkins Behind Apache Reverse Proxy?
-Installing Apache Install Apache from Repo
+Click on Install suggested plugins
+Screenshot 2023-02-01 at 10 58 40 AM
 
-    sudo apt-get update
-    sudo apt-get install apache2 -y
-Enable proxy, proxy_http, headers module
+Wait for the Jenkins to Install suggested plugins
 
-    sudo a2enmod proxy
-    sudo a2enmod proxy_http
-    sudo a2enmod headers
-    Edit Apache Configuration file
+Screenshot 2023-02-01 at 10 59 31 AM
 
-    cd /etc/apache2/sites-available/
-    sudo vim jenkins.conf
-Then, In the file enter the following code snippet to make the Apache works for Jenkins. Then, In this ServerName should be your domain name, ProxyPass should point your localhost point to Jenkins (Port 8080) and ProxyPassReverse should be added for both localhost address and Domain address. In the block, we need to give access to the apache to handle the Jenkins.
+Create First Admin User or Skip the step [If you want to use this Jenkins instance for future use-cases as well, better to create admin user]
 
-    <Virtualhost *:80>
-        ServerName        your-domain-name.com
-        ProxyRequests     Off
-        ProxyPreserveHost On
-        AllowEncodedSlashes NoDecode
- 
-    <Proxy http://localhost:8080/*>
-      Order deny,allow
-      Allow from all
-    </Proxy>
- 
-    ProxyPass         /  http://localhost:8080/ nocanon
-    ProxyPassReverse  /  http://localhost:8080/
-    ProxyPassReverse  /  http://your-domain-name.com/
-    
-</Virtualhost>
-Enable and Restart Jenkins
+Screenshot 2023-02-01 at 11 02 09 AM
 
-    sudo a2ensite jenkins
-    sudo systemctl restart apache2
-    sudo systemctl restart jenkins
-    Configuring Firewall
-    
-    sudo ufw allow ssh
-    sudo ufw allow http
-    sudo ufw allow https
-Now, enable firewall by passing following command.
+Jenkins Installation is Successful. You can now starting using the Jenkins
 
-    ufw enable
-That’s all. Now on, your Jenkins server will run behind the Apache’s Reverse Proxy.
+Screenshot 2023-02-01 at 11 14 13 AM
+
+Install the Docker Pipeline plugin in Jenkins:
+Log in to Jenkins.
+Go to Manage Jenkins > Manage Plugins.
+In the Available tab, search for "Docker Pipeline".
+Select the plugin and click the Install button.
+Restart Jenkins after the plugin is installed.
+Screenshot 2023-02-01 at 12 17 02 PM
+
+Wait for the Jenkins to be restarted.
+
+Docker Slave Configuration
+Run the below command to Install Docker
+
+sudo apt update
+sudo apt install docker.io
+Grant Jenkins user and Ubuntu user permission to docker deamon.
+sudo su - 
+usermod -aG docker jenkins
+usermod -aG docker ubuntu
+systemctl restart docker
+Once you are done with the above steps, it is better to restart Jenkins.
+
+http://<ec2-instance-public-ip>:8080/restart
+The docker agent configuration is now successful.
