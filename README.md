@@ -8,16 +8,16 @@ Then, run the following command to install JDK 11:
     sudo apt-get install openjdk-11-jdk
 Now, we will install Jenkins itself. Issue the following four commands in sequence to initiate the installation from the Jenkins repository:
 
-    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+    curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
       /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-    
     echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-      https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+      https://pkg.jenkins.io/debian binary/ | sudo tee \
       /etc/apt/sources.list.d/jenkins.list > /dev/null
-
+      
     sudo apt-get update
-
+    
     sudo apt-get install jenkins
+
 Once that’s done, start the Jenkins service with the following command:
 
     sudo systemctl start jenkins.service
