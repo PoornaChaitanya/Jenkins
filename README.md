@@ -62,6 +62,7 @@ Access Jenkins
     
 Enter the password, install suggested plugins, and create an admin user if desired.
 ![Screenshot 2024-05-24 190828](https://github.com/PoornaChaitanya/Jenkins/assets/84367538/392ede94-d20a-489b-918e-717837221ed6)
+
 ![Screenshot 2024-05-24 190906](https://github.com/PoornaChaitanya/Jenkins/assets/84367538/a80833f0-7fe3-4216-a37e-bcc7108ca8ba)
 
 
@@ -75,7 +76,6 @@ Enter the password, install suggested plugins, and create an admin user if desir
     sudo su - 
     usermod -aG docker jenkins
     usermod -aG docker ubuntu
-    systemctl restart docker
 
 ### Restart Docker service
     sudo systemctl restart docker
