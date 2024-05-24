@@ -2,19 +2,17 @@
 
 Install Jenkins, configure Docker as agent, set up cicd, deploy applications to k8s and much more.
 
- AWS EC2 Instance
+## AWS EC2 Instance
 
- Go to AWS Console
+-Go to AWS Console
+-Instances(running)
+-Launch instances
 
- Instances(running)
-
- Launch instances
-
-
-Install Jenkins.
+### Install Jenkins.
 
 Pre-Requisites:
- Java (JDK)
+-Java (JDK)
+
 Run the below commands to install Java and Jenkins
 Install Java
 
