@@ -12,7 +12,7 @@ This guide will help you install Jenkins, configure Docker as an agent.
    - Choose an Amazon Machine Image (AMI), e.g., `Ubuntu Server 20.04 LTS (HVM)`
    - Select an instance type, e.g., `t2.micro`
    - Configure instance details, add storage, add tags if necessary
-   - Configure Security Group to allow necessary ports (22 for SSH, 8080 for Jenkins, 2376 for Docker)
+   - Configure Security Group to allow necessary ports (22 for SSH, 8080 for Jenkins)
 
 ![Screenshot 2024-05-24 190130](https://github.com/PoornaChaitanya/Jenkins/assets/84367538/314376cf-3c48-46cd-a361-f7a4e0ee80f4)
 
